@@ -1,0 +1,30 @@
+experiment: 'afhq_r64s256_p256dl_9k'
+phase: 'train'
+cfg: 'afhq' 
+data: 'data/AFHQ/afhq_v2_256.zip'
+gpus: 8
+batch: 32
+decoder_output_dim: 32
+d_module: 'training.dual_discriminator.DualDiscriminator'
+aware3d_res: [4,8,16,32,64,128,256]
+triplane_resolution: 256
+triplane_channels: 96
+triplane_act: None
+snap: 200
+resume: '002400' # 'out/ffhq256_2d/network-snapshot-024000.pkl'
+patch_scale: 1.0
+aug: 'ada'
+gamma: 5.0
+
+# inference
+chunk: -1 # 131072
+inference_mode: 'video'
+image_mode: 'image'
+seeds: [0, 4]
+grid: (2, 2)
+w_frames: 120
+neural_rendering_resolution_infer: 64
+resize_resolution: 256
+pitch_range: 0.25
+yaw_range: 0.35
+retplane: -1

@@ -1,0 +1,49 @@
+experiment: 'test'
+phase: 'infer'
+data: 'data/FFHQ/FFHQ_512.zip'
+gpus: 1
+batch: 4
+decoder_output_dim: 32
+g_module: 'training.dual_triplane.DualTriPlaneGenerator'
+retidx: [-3, -1]
+roll_out: None
+# aware3d_res: [4,8,16,32,64,128,256]
+aware3d_att: False
+add_block: 0
+add_sr_module: True
+depth_guided_sample: 0.
+# mbstd_group: 2
+# mbstd_num_channels: 1
+d_module: 'training.dual_discriminator.DualDiscriminator'
+d_patch_module: 'training.dual_discriminator.SingleDiscriminator'
+# g_free_param: ['backbone.synthesis.b256']
+# neural_rendering_resolution_initial: 64
+# neural_rendering_resolution_final: 64
+triplane_resolution: 256
+triplane_channels: 96
+triplane_act: None
+snap: 100
+resume: 'eg3d/out/res64s256_plane256_retry/network-snapshot-024000.pkl'
+# resume_kimg: 2000
+patch_scale: 0.25
+lpips: True
+feat_match: 0
+detail_reg: 0
+patch_gan: 0.2
+accum_iter: 1
+density_reg_p_dist: 0.002
+
+# inference
+metrics: []
+chunk: 100000 # 131072
+inference_mode: 'image'
+image_mode: 'image'
+seeds: [0,4]
+grid: (4,1)
+w_frames: 120
+coarse: 1
+neural_rendering_resolution_infer: 64
+resize_resolution: 256
+pitch_range: 0. # 0.25
+yaw_range: 0.4 # 0.35
+retplane: -1
