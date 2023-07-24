@@ -53,17 +53,29 @@
 ```
 
 # Config file
-+ In above `sh` files, `--cfg` can be changed for different models.
++ In above `.sh` files, `--cfg` can be changed for different models.
 + In a config file (e.g., configs/ffhq_3d.yaml), key settings are explained as follows:
     ```yaml
-    experiment: 'ffhq512_3d' # your experiment name
-    aware3d_res: [4,8,16,32,64,128,256] # the resolution with 3D-aware conv
-    resume: '017000' # model to load; None for from-scratch; we suggest loading a 2D model before training a 3D model; also, a 3D model can be trained from scratch
-    patch_gan: 0.1 # loss weight for patch distriminator
-    metrics: [] # For 512-size model w/o 2D super-res., FID evaluation takes ~6h. You would want to set `metrics: []` to cancel evaluation durning training
-    inference_mode: 'video' # select from video|videos|image
-    neural_rendering_resolution_infer: 512 # rendering resolution with radiance field
-    coarse: 0 # which tri-plane used for rendering. 0: coarse & detail triplanes; 1: coarse triplane; 2: detail triplane
-    retplane: -1 # return triplane or not
-    shapes: False # extract geometry or not
+    # your experiment name
+    experiment: 'ffhq512_3d' 
+    # the resolution with 3D-aware conv
+    aware3d_res: [4,8,16,32,64,128,256] 
+    # model to load; None for from-scratch; we suggest loading a 2D model before training a 3D model; also, a 3D model can be trained from scratch
+    resume: '017000' 
+    # loss weight for patch distriminator
+    patch_gan: 0.1 
+    # for 512-size model w/o 2D super-res., FID evaluation takes ~4h; you would want to set `metrics: []` to cancel evaluation durning training
+    metrics: [] 
+    # select from video|videos|image
+    inference_mode: 'video' 
+    # rendering resolution with radiance field in inference and evaluation
+    neural_rendering_resolution_infer: 512 
+    # which tri-plane used for rendering. 0: coarse & detail triplanes; 1: coarse triplane; 2: detail triplane
+    coarse: 0 
+    # return triplane or not
+    retplane: -1 
+    # extract geometry or not
+    shapes: False 
+    # reduce point amount in a forward pass to avoid OOM durning inference and evaluation
+    chunk: 500000 
     ```
