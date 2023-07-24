@@ -13,18 +13,15 @@ triplane_resolution: 256
 triplane_channels: 96
 triplane_act: None
 snap: 200
-resume: None # '016200'
-resume_kimg: 0
+resume: None # '016200' | 'out/ffhq256_2d/network-snapshot-024000.pkl' | None
 patch_scale: 0.25
 lpips: True
-feat_match: 0
-detail_reg: 0
 patch_gan: 0.2
 density_reg_p_dist: 0.002
 
 # inference
 # metrics: []
-chunk: -1 # 131072
+chunk: -1
 inference_mode: 'video'
 image_mode: 'image'
 seeds: [0, 4]

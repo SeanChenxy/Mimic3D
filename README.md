@@ -10,8 +10,8 @@
     conda activate eg3d
     ```
 + Follow [EG3D](https://github.com/NVlabs/eg3d/tree/main/dataset_preprocessing) to pre-process FFHQ, AFHQ, and ShapeNet data.
-+ Pretrained models are avaliable at [Google Drive](https://drive.google.com/drive/folders/1zu9PUD2TvPuc-zTU1hK8q8GnnxcUdZxj?usp=sharing)
-+ The data and model floders look as follows
++ Pretrained models are avaliable at [Google Drive](https://drive.google.com/drive/folders/1zu9PUD2TvPuc-zTU1hK8q8GnnxcUdZxj?usp=sharing).
++ The data and model floders look as follows:
     ```
     ROOT
         ├──data
@@ -54,14 +54,16 @@
 
 # Config file
 + In above `sh` files, `--cfg` can be changed for different models.
-+ In config file (e.g., configs/ffhq_3d.yaml), key settings are explained as follow
++ In a config file (e.g., configs/ffhq_3d.yaml), key settings are explained as follows:
     ```yaml
     experiment: 'ffhq512_3d' # your experiment name
     aware3d_res: [4,8,16,32,64,128,256] # the resolution with 3D-aware conv
-    resume: '017000' # model to load; None for from-scratch
-    patch_gan: : 0.1 # loss weight for patch distriminator
+    resume: '017000' # model to load; None for from-scratch; we suggest loading a 2D model before training a 3D model; also, a 3D model can be trained from scratch
+    patch_gan: 0.1 # loss weight for patch distriminator
+    metrics: [] # For 512-size model w/o 2D super-res., FID evaluation takes ~6h. You would want to set `metrics: []` to cancel evaluation durning training
     inference_mode: 'video' # select from video|videos|image
     neural_rendering_resolution_infer: 512 # rendering resolution with radiance field
+    coarse: 0 # which tri-plane used for rendering. 0: coarse & detail triplanes; 1: coarse triplane; 2: detail triplane
     retplane: -1 # return triplane or not
     shapes: False # extract geometry or not
     ```

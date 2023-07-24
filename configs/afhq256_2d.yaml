@@ -1,4 +1,4 @@
-experiment: 'afhq_r64s256_p256dl_9k'
+experiment: 'afhq256_2d'
 phase: 'train'
 cfg: 'afhq' 
 data: 'data/AFHQ/afhq_v2_256.zip'
@@ -11,13 +11,13 @@ triplane_resolution: 256
 triplane_channels: 96
 triplane_act: None
 snap: 200
-resume: '002400' # 'out/ffhq256_2d/network-snapshot-024000.pkl'
+resume: '001600' # 'out/ffhq256_2d/network-snapshot-024000.pkl'
 patch_scale: 1.0
 aug: 'ada'
 gamma: 5.0
 
 # inference
-chunk: -1 # 131072
+chunk: -1
 inference_mode: 'video'
 image_mode: 'image'
 seeds: [0, 4]

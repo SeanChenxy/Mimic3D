@@ -11,12 +11,12 @@ triplane_resolution: 256
 triplane_channels: 96
 triplane_act: None
 snap: 200
-resume: '020800' # 'eg3d/out/r64s512_p256dl/network-snapshot-020000.pkl'
+resume: '020800'
 patch_scale: 1.0
 
 # inference
 # metrics: []
-chunk: -1 # 131072
+chunk: -1
 inference_mode: 'video'
 image_mode: 'image'
 seeds: [0, 4]

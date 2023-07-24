@@ -16,7 +16,7 @@ resume_kimg: 0
 patch_scale: 1.0
 
 # inference
-chunk: -1 # 131072
+chunk: -1
 inference_mode: 'video'
 image_mode: 'image'
 seeds: [0, 4]
