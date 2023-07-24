@@ -11,7 +11,7 @@
     ```
 + Follow [EG3D](https://github.com/NVlabs/eg3d/tree/main/dataset_preprocessing) to pre-process FFHQ, AFHQ, and ShapeNet data.
 + Pretrained models are avaliable at [Google Drive](https://drive.google.com/drive/folders/1zu9PUD2TvPuc-zTU1hK8q8GnnxcUdZxj?usp=sharing).
-+ The data and model floders look as follows:
++ The data and model folders look as follows:
     ```
     ROOT
         ├──data
@@ -55,12 +55,15 @@
 
 ## Config file
 + In above `.sh` files, `--cfg` can be changed for different models.
-+ In a config file (e.g., configs/ffhq_3d.yaml), key settings are explained as follows:
++ In a config file (e.g., `configs/ffhq_3d.yaml`), key settings are explained as follows:
     ```yaml
     # your experiment name
     experiment: 'ffhq512_3d' 
+    # it takes ~40G GPU memory if using 8 GPUs and a batch size of 32 to train 512-size 3D model
+    gpus: 8
+    batch: 32
     # the resolution with 3D-aware conv
-    aware3d_res: [4,8,16,32,64,128,256] 
+    aware3d_res: [4,8,16,32,64,128,256]
     # model to load; None for from-scratch; we suggest loading a 2D model before training a 3D model; also, a 3D model can be trained from scratch
     resume: '017000' 
     # loss weight for patch distriminator
