@@ -66,7 +66,7 @@
     aware3d_res: [4,8,16,32,64,128,256]
     # model to load; None for from-scratch; we suggest loading a 2D model before training a 3D model; also, a 3D model can be trained from scratch
     resume: '017000' 
-    # loss weight for patch distriminator
+    # loss weight for patch discrimination
     patch_gan: 0.1 
     # for 512-size model w/o 2D super-res., FID evaluation takes ~4h; you would want to set `metrics: []` to cancel evaluation durning training
     metrics: [] 
