@@ -39,7 +39,7 @@
 ```
 ./scripts/infer.sh
 ```
-+ Results will save to `out/{experiment}/infer`
++ Results will be saved to `out/{experiment}/infer`
 
 
 # Evaluation 
@@ -51,6 +51,7 @@
 ```
 ./scripts/train.sh
 ```
++ All asserts produced by the training process will be saved to `out/{experiment}`
 
 # Config file
 + In above `.sh` files, `--cfg` can be changed for different models.
