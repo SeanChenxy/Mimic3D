@@ -2,7 +2,7 @@
 
 [Project Page](https://seanchenxy.github.io/Mimic3DWeb/) | [Paper](https://arxiv.org/abs/2303.09036) 
 
-# Requirements and Data Preparation
+## Requirements and Data Preparation
 + Our code is adopted from [EG3D](https://github.com/NVlabs/eg3d) and follow its requirements and data preparation.
 + Create a environment
     ```bash
@@ -35,25 +35,25 @@
             ├──shapenet128_2d
             ├──shapenet128_3d
     ```
-# Inference
+## Inference
 ```
 ./scripts/infer.sh
 ```
 + Results will be saved to `out/{experiment}/infer`
 
 
-# Evaluation 
+## Evaluation 
 ```
 ./scripts/val.sh
 ```
 
-# Training 
+## Training 
 ```
 ./scripts/train.sh
 ```
 + All asserts produced by the training process will be saved to `out/{experiment}`
 
-# Config file
+## Config file
 + In above `.sh` files, `--cfg` can be changed for different models.
 + In a config file (e.g., configs/ffhq_3d.yaml), key settings are explained as follows:
     ```yaml
@@ -80,3 +80,16 @@
     # reduce point amount in a forward pass to avoid OOM durning inference and evaluation
     chunk: 500000 
     ```
+
+## Reference
+```tex
+@inproceedings{bib:mimic3d,
+  title={Mimic3D: Thriving 3D-Aware GANs via 3D-to-2D Imitation},
+  author={Chen, Xingyu and Deng, Yu and Wang, Baoyuan},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year={2023}
+}
+```
+
+## Acknowledgement
+Our implementation is based on [EG3D](https://github.com/NVlabs/eg3d). We thank them for inspiring implementations.
