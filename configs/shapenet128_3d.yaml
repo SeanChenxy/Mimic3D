@@ -14,7 +14,7 @@ triplane_resolution: 256
 triplane_channels: 96
 triplane_act: None
 snap: 200
-resume: '013600' # 'eg3d/out/shapenet128_2d/network-snapshot-025000.pkl'
+resume: '013600' # 'out/shapenet128_2d/network-snapshot-025000.pkl'
 patch_scale: 0.5
 lpips: True
 patch_gan: 0.2
