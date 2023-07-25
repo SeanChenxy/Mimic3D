@@ -325,7 +325,6 @@ class SynthesisLayer(torch.nn.Module):
         styles = self.affine(w)
         if self.roll_out in ['b', 'a', 's']:
             styles = styles.view(styles.shape[0], 3, styles.shape[1]//3).view(styles.shape[0]*3, styles.shape[1]//3)
-            # styles = styles.view(styles.shape[0], 1, styles.shape[1]).repeat(1, 3, 1).view(styles.shape[0]*3, styles.shape[1])
         if self.roll_out in ['b', 'a',]:
             x = aware3d_att(x) if self.roll_out=='a' else aware3d(x)
         noise = None
@@ -364,19 +363,14 @@ def aware3d(x):
     x_zy_pz = x_zy.mean(dim=-1, keepdim=True).repeat(1,1,1,x_xy.shape[-1])
     x_xz_pz = x_xz.mean(dim=-2, keepdim=True).repeat(1,1,x_xy.shape[-2],1)
     x_xy_ = torch.cat([x_xy, x_zy_pz, x_xz_pz], 1)
-    # x_xy_ = (x_xy + x_zy_pz + x_xz_pz)/3.0
 
     x_yx_px = x_yx.mean(dim=-2, keepdim=True).repeat(1,1,x_yz.shape[-2],1)
     x_xz_px = x_xz.mean(dim=-1, keepdim=True).repeat(1,1,1,x_yz.shape[-1])
     x_yz_ = torch.cat([x_yx_px, x_yz, x_xz_px], 1)
-    # x_yz_ = torch.cat([x_yz, x_xz_px, x_yx_px], 1)
-    # x_yz_ = (x_yx_px + x_yz + x_xz_px)/3.0
 
     x_yx_py = x_yx.mean(dim=-1, keepdim=True).repeat(1,1,1,x_zx.shape[-1])
     x_zy_py = x_zy.mean(dim=-2, keepdim=True).repeat(1,1,x_zx.shape[-2],1)
     x_zx_ = torch.cat([x_yx_py, x_zy_py, x_zx], 1)
-    # x_zx_ = torch.cat([x_zx, x_yx_py, x_zy_py], 1)
-    # x_zx_ = (x_yx_py + x_zy_py + x_zx)/3.0
 
     x = torch.cat([x_xy_[:, None], x_yz_[:, None], x_zx_[:, None]], 1).view(B, -1, H, W)
     return x
@@ -398,7 +392,6 @@ def aware3d_att(x):
     x_xyz = torch.softmax(x_xyz, dim=-1)
     x_cyx_f_cxz = torch.einsum('bxyz,bxzc->bxyc', x_xyz, x_xzc).permute(0,3,2,1)
     x_cyx_ = torch.cat([x_cyx, x_cyx_f_czy, x_cyx_f_cxz], 1)
-    # x_cyx_ = (x_cyx + x_cyx_f_czy + x_cyx_f_cxz)/3.0
 
     x_zyc = x_czy.permute(0,2,3,1)
     x_zcx = x_cxz.permute(0,3,1,2)
@@ -406,29 +399,21 @@ def aware3d_att(x):
     x_zyx = torch.einsum('bzyc,bzcx->bzyx', x_zyc, x_zcx)
     x_zyx = torch.softmax(x_zyx, dim=-1)
     x_czy_f_cxz = torch.einsum('bzyx,bzxc->bzyc', x_zyx, x_zxc).permute(0,3,1,2)
-    # x_yzc = x_czy.permute(0,3,2,1)
     x_ycx = x_cyx.permute(0,2,1,3)
-    # x_yxc = x_cyx.permute(0,2,3,1)
     x_yzx = torch.einsum('byzc,bycx->byzx', x_yzc, x_ycx)
     x_yzx = torch.softmax(x_yzx, dim=-1)
     x_czy_f_cyx = torch.einsum('byzx,byxc->byzc', x_yzx, x_yxc).permute(0,3,2,1)
     x_czy_ = torch.cat([x_czy, x_czy_f_cxz, x_czy_f_cyx], 1)
-    # x_czy_ = (x_czy + x_czy_f_cxz + x_czy_f_cyx)/3.0
 
-    # x_xzc = x_cxz.permute(0,2,3,1)
     x_xcy = x_cyx.permute(0,3,1,2)
-    # x_xyc = x_cyx.permute(0,3,2,1)
     x_xzy = torch.einsum('bxzc,bxcy->bxzy', x_xzc, x_xcy)
     x_xzy = torch.softmax(x_xzy, dim=-1)
     x_cxz_f_cyx = torch.einsum('bxzy,bxyc->bxzc', x_xzy, x_xyc).permute(0,3,1,2)
-    # x_zxc = x_cxz.permute(0,3,2,1)
     x_zcy = x_czy.permute(0,2,1,3)
-    # x_zyc = x_czy.permute(0,2,3,1)
     x_zxy = torch.einsum('bzxc,bzcy->bzxy', x_zxc, x_zcy)
     x_zxy = torch.softmax(x_zxy, dim=-1)
     x_cxz_f_czy = torch.einsum('bzxy,bzyc->bzxc', x_zxy, x_zyc).permute(0,3,2,1)
     x_cxz_ = torch.cat([x_cxz, x_cxz_f_cyx, x_cxz_f_czy], 1)
-    # x_cxz_ = (x_cxz + x_cxz_f_cyx + x_cxz_f_czy)/3.0
 
     x = torch.cat([x_cyx_[:, None], x_czy_[:, None], x_cxz_[:, None]], 1).view(x.shape[0], -1, x.shape[2], x.shape[3])
     return x
@@ -461,7 +446,6 @@ class ToRGBLayer(torch.nn.Module):
         styles = self.affine(w) * self.weight_gain
         if self.roll_out in ['b', 'a', 's']:
             styles = styles.view(styles.shape[0], 3, styles.shape[1]//3).view(styles.shape[0]*3, styles.shape[1]//3)
-            # styles = styles.view(styles.shape[0], 1, styles.shape[1]).repeat(1, 3, 1).view(styles.shape[0]*3, styles.shape[1])
         if self.roll_out in ['b', 'a',]:
             x = aware3d_att(x) if self.roll_out=='a' else aware3d(x)
         x = modulated_conv2d(x=x, weight=self.weight, styles=styles, demodulate=False, fused_modconv=fused_modconv)
@@ -610,12 +594,8 @@ class SynthesisNetwork(torch.nn.Module):
         channels_dict = {res: min(channel_base // res, channel_max) for res in self.block_resolutions}
         fp16_resolution = max(2 ** (self.img_resolution_log2 + 1 - num_fp16_res), 8)
 
-        # block_res = self.block_resolutions.copy()
-        # for i in range(self.add_block):
-        #     block_res.append(block_res[-1])
-        ret_resolution = aware3d_res[-1] if len(aware3d_res)>0 else -1 #self.block_resolutions[-1] #[block_res[i] for i in retidx if block_res[i] in aware3d_res] if retidx is not None else block_res[-1:]
+        ret_resolution = aware3d_res[-1] if len(aware3d_res)>0 else -1
         add_3dblock = 0 if (retidx is None or add_block>0) else -retidx[0]-1
-        # ret_resolution += [min(ret_resolution[-1]*2, 512)] *  (-retidx[0]-1)
 
         self.num_ws = 0
         for res in self.block_resolutions:
@@ -673,7 +653,6 @@ class SynthesisNetwork(torch.nn.Module):
             if block3d is not None:
                 last_has_block3d= True
                 img3d = block3d(img3d, img, cur_ws, block_kwargs)
-                # x3d, img3d = block3d(x3d, img3d, img, cur_ws)
                 if isinstance(img3d, list):
                     img_list.extend(img3d)
                     img3d = img3d[-1]
@@ -728,7 +707,7 @@ class Aware3DBlock(torch.nn.Module):
         up = (2, 1)[img_resolution==ret_resolution]
         self.block = SynthesisBlock(img_channels//3, img_channels//3, w_dim=w_dim, resolution=img_resolution*up, up=up,
                 img_channels=32, is_last=True, use_fp16=False, **block_kwargs)
-        if img_resolution==ret_resolution and add_3dblock>0:# in ret_resolution and ret_resolution.index(img_resolution)<len(ret_resolution)-1:
+        if img_resolution==ret_resolution and add_3dblock>0:
             if add_3dblock>1:
                  block_kwargs['roll_out'] = 's'
             self.block2 = SynthesisBlock(img_channels//3, img_channels//3, w_dim=w_dim, resolution=img_resolution*2, up=2,
@@ -744,12 +723,10 @@ class Aware3DBlock(torch.nn.Module):
     def forward(self, x, img, ws, block_kwargs):
         img = img.view(img.shape[0], 3, -1, img.shape[-2], img.shape[-1]).view(img.shape[0]*3, -1, img.shape[-2], img.shape[-1])
         if x is not None:
-            # x = x.view(x.shape[0], 3, -1, x.shape[-2], x.shape[-1]).view(x.shape[0]*3, -1, x.shape[-2], x.shape[-1])
             img = img + x
 
         ws = ws[:, -1:, :].repeat(1, 3, 1)
         x, img = self.block(img, None, ws, **block_kwargs)
-        # img = img.view(-1, 3, img.shape[-3], img.shape[-2], img.shape[-1]).view(-1, 3*img.shape[-3], img.shape[-2], img.shape[-1])
         if self.block2 is None:
             return img
         else:
@@ -759,18 +736,6 @@ class Aware3DBlock(torch.nn.Module):
                 x, img3 = self.block3(img2, None, ws, **block_kwargs)
                 retlist.append(img3)
             return retlist
-    
-    # def forward(self, x3d, img3d, img, ws):
-    #     img = img.view(img.shape[0], 3, -1, img.shape[-2], img.shape[-1]).view(img.shape[0]*3, -1, img.shape[-2], img.shape[-1])
-    #     if x3d is not None:
-    #         # x3d = x3d.view(x3d.shape[0], 3, -1, x3d.shape[-2], x3d.shape[-1]).view(x3d.shape[0]*3, -1, x3d.shape[-2], x3d.shape[-1])
-    #         x3d = x3d + img
-    #     else:
-    #         x3d = img
-
-    #     ws = ws[:, -1:, :].repeat(1, 3, 1)
-    #     x3d, img3d = self.block(x3d, img3d, ws)
-    #     return x3d, img3d
 
 @persistence.persistent_class
 class Generator(torch.nn.Module):

@@ -13,7 +13,7 @@ triplane_resolution: 256
 triplane_channels: 96
 triplane_act: None
 snap: 200
-resume: None # '016200' | 'out/ffhq256_2d/network-snapshot-024000.pkl' | None
+resume: 'out/ffhq256_2d/network-snapshot-024000.pkl' # '016200' | 'out/ffhq256_2d/network-snapshot-024000.pkl' | None
 patch_scale: 0.25
 lpips: True
 patch_gan: 0.2
@@ -30,6 +30,6 @@ w_frames: 120
 coarse: 0
 neural_rendering_resolution_infer: 256
 resize_resolution: 256
-pitch_range: 0.25 # 0.25
-yaw_range: 0.35 # 0.35
+pitch_range: 0.25
+yaw_range: 0.35
 retplane: 2

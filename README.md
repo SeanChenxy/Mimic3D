@@ -59,7 +59,7 @@
     ```yaml
     # your experiment name
     experiment: 'ffhq512_3d' 
-    # it takes ~40G GPU memory if using 8 GPUs and a batch size of 32 to train 512-size 3D model
+    # it takes ~40G GPU memory if using 8 GPUs and a batch size of 32 to train a 512-size 3D model
     gpus: 8
     batch: 32
     # the resolution with 3D-aware conv

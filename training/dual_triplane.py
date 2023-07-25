@@ -188,7 +188,7 @@ class DualTriPlaneGenerator(torch.nn.Module):
         # Compute RGB features, density for arbitrary 3D coordinates. Mostly used for extracting shapes. 
         ws = self.mapping(z, c, truncation_psi=truncation_psi, truncation_cutoff=truncation_cutoff, update_emas=update_emas)
         planes = self.backbone.synthesis(ws, update_emas=update_emas, **synthesis_kwargs)
-        if self.plane_act is not None and not self.training:
+        if self.plane_act is not None:
             planes = self.plane_act(planes)
         planes = self.plane_reshape(planes)
         return self.renderer.run_model(planes, self.decoder, coordinates, directions, self.rendering_kwargs)
@@ -196,7 +196,7 @@ class DualTriPlaneGenerator(torch.nn.Module):
     def sample_mixed(self, coordinates, directions, ws, truncation_psi=1, truncation_cutoff=None, update_emas=False, **synthesis_kwargs):
         # Same as sample, but expects latent vectors 'ws' instead of Gaussian noise 'z'
         planes = self.backbone.synthesis(ws, update_emas = update_emas, **synthesis_kwargs)
-        if self.plane_act is not None and not self.training:
+        if self.plane_act is not None:
             planes = self.plane_act(planes)
         planes = self.plane_reshape(planes)
         return self.renderer.run_model(planes, self.decoder, coordinates, directions, self.rendering_kwargs)
